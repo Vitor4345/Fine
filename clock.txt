@@ -1,0 +1,135 @@
+Clock, ciclos de CPU e execução de instruções
+Clock
+
+O clock é um sinal elétrico periódico que alterna entre 0 e 1 e sincroniza todas as operações de um microcontrolador.
+
+Exemplo de sinal de clock:
+
+__|‾‾|__|‾‾|__|‾‾
+
+Cada mudança cria um ciclo de clock.
+
+Se o clock é 16 MHz:
+
+16.000.000 ciclos por segundo
+
+Tempo de um ciclo:
+
+1 / frequência
+
+Exemplo:
+
+1 / 16 MHz ≈ 62.5 ns
+Bordas do clock
+
+Operações digitais normalmente acontecem quando o clock muda de estado.
+
+Borda de subida (rising edge)
+
+0 → 1
+__|‾‾
+
+Borda de descida (falling edge)
+
+1 → 0
+‾‾|__
+
+Circuitos podem executar ações exatamente nesses instantes.
+
+Ciclos de instrução
+
+Uma instrução da CPU não acontece instantaneamente.
+
+Ela é dividida em etapas internas:
+
+buscar instrução na memória
+
+decodificar instrução
+
+executar operação
+
+escrever resultado
+
+Cada etapa normalmente consome 1 ciclo de clock.
+
+Exemplo:
+
+ADD R1, R2
+
+pode levar:
+
+ciclo 1 → buscar instrução
+ciclo 2 → decodificar
+ciclo 3 → executar soma
+
+Total: 3 ciclos
+
+Por que algumas instruções levam mais ciclos
+
+Instruções simples (registrador → registrador):
+
+ADD R1, R2
+
+podem levar 1 ciclo.
+
+Instruções com memória:
+
+LD A,(HL)
+
+precisam:
+
+pegar endereço
+
+acessar memória
+
+copiar dado
+
+Por isso podem levar mais ciclos.
+
+Uso em emuladores
+
+Emuladores precisam reproduzir exatamente o número de ciclos de cada instrução.
+
+Isso é importante porque periféricos dependem do tempo da CPU:
+
+vídeo
+
+timers
+
+áudio
+
+comunicação
+
+Exemplo simplificado de emulação:
+
+execute_instruction(opcode)
+cycles += instruction_cycles[opcode]
+Onde encontrar os ciclos das instruções
+
+Normalmente em:
+
+Datasheet do microcontrolador
+
+Instruction Set Manual
+
+Technical Reference Manual
+
+Nesses documentos existe uma tabela chamada:
+
+Instruction Timing
+Instruction Set Summary
+
+Exemplo de tabela:
+
+Instruction   Cycles
+NOP           1
+ADD           1
+LD            2
+CALL          4
+Conceito chave
+
+Uma instrução de CPU é uma sequência de micro-operações sincronizadas pelo clock.
+
+O clock atua como um metrônomo que permite bilhões de transistores mudarem de estado de forma coordenada.
+
+Uma próxima peça interessante desse quebra-cabeça é algo chamado micro-operações e microcode, que é literalmente o “roteiro interno” que transforma uma instrução de máquina em várias ações dentro da CPU. Pouca gente fora de quem constrói CPUs ou emuladores olha para essa camada — mas é onde a coisa fica realmente fascinante.

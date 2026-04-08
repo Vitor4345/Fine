@@ -1,0 +1,26 @@
+try{
+    let mapIframe = document.getElementById("map_canvas");
+    mapIframe.onload = () => {
+        let mapaDiv = document.querySelector("#map_canvas")
+        let mapFrame = mapaDiv.contentWindow.window;
+
+        mapFrame.route.off("routesfound");
+        mapFrame.route.on('routesfound', function(e){
+            let listMarkersSize = mapFrame.plan._markers.length;
+            try{
+                legs_osm = e.routes[0];
+                for(let i=1; i <= listMarkersSize-2; i++){
+                    mapFrame.plan._markers[i].off("click");
+                    mapFrame.plan._markers[i].on("click", async (mark)=>{
+                        console.log("Removendo: ", i);
+                        mapFrame.plan.spliceWaypoints(i, 1)
+                    })
+                }
+            }catch(err){
+                console.log(`Erro: ao remover o index ${i}: ${err}`)
+            }
+        });
+    }
+}catch (err){
+    console.log("!Error: ", err);
+}
